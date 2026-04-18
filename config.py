@@ -21,4 +21,4 @@ LABEL_ENCODERS_PATH = MODEL_DIR / "label_encoders.pkl"
 TRAINING_DATA_PATH = DATA_DIR / "crop_yield.csv"
 
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-LLM_MODEL_NAME = "claude-3-5-sonnet-latest"
+LLM_MODEL_NAME = "llama-3.3-70b-versatile"

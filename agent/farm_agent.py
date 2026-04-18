@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from typing import Any, TypedDict
 
-from langchain_anthropic import ChatAnthropic
+from langchain_groq import ChatGroq
 from langgraph.graph import END, START, StateGraph
 
 from agent.prompts import REPORT_PROMPT_TEMPLATE
@@ -67,8 +67,8 @@ def generate_report_node(state: FarmAgentState) -> FarmAgentState:
         risk_level=state["yield_prediction"]["risk_level"],
         retrieved_context=retrieved_context or "No agronomic references retrieved.",
     )
-    if os.getenv("ANTHROPIC_API_KEY"):
-        llm = ChatAnthropic(model=LLM_MODEL_NAME, temperature=0)
+    if os.getenv("GROQ_API_KEY"):
+        llm = ChatGroq(model=LLM_MODEL_NAME, temperature=0)
         report = llm.invoke(prompt).content
     else:
         references = "\n".join(
@@ -94,7 +94,7 @@ def generate_report_node(state: FarmAgentState) -> FarmAgentState:
             "## Agronomic References (from retrieved docs only)\n"
             f"{references}\n\n"
             "## Disclaimer\n"
-            "- This fallback report was generated without a live LLM because `ANTHROPIC_API_KEY` is not set."
+            "- This fallback report was generated without a live LLM because `GROQ_API_KEY` is not set."
         )
     return {**state, "final_report": report}
 

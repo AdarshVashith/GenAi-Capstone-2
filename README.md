@@ -5,7 +5,7 @@ This project now includes:
 - A local agronomy knowledge base in `rag_docs/`
 - A ChromaDB vectorstore builder using Hugging Face embeddings
 - A LangGraph farm advisory agent
-- Anthropic-backed structured report generation
+- Groq-backed structured report generation
 - A simple Streamlit UI in `app.py`
 
 ## Install
@@ -14,12 +14,14 @@ This project now includes:
 pip install -r requirements.txt
 ```
 
-## Environment
+## LLM API Setup
 
-Set your Anthropic API key before running the advisory app:
+The assistant uses **Groq** for report generation.
+
+Set your Groq API key before running the advisory app:
 
 ```bash
-export ANTHROPIC_API_KEY="your_api_key_here"
+export GROQ_API_KEY="your_api_key_here"
 ```
 
 You can also create a local `.env` file in the project root:
@@ -31,7 +33,7 @@ cp .env.example .env
 Then edit `.env` and set:
 
 ```bash
-ANTHROPIC_API_KEY=your_api_key_here
+GROQ_API_KEY=your_api_key_here
 ```
 
 ## Build the Vectorstore
