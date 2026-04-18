@@ -1,0 +1,13 @@
+langchain
+langchain-community
+langchain-text-splitters
+langchain-huggingface
+langchain-chroma
+langgraph
+chromadb
+streamlit
+langchain-anthropic
+sentence-transformers
+scikit-learn
+joblib
+pandas
