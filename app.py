@@ -45,27 +45,31 @@ def main() -> None:
     """Render the Farm Advisory Assistant UI."""
     st.markdown("""
         <style>
-        .main {
-            background-color: #f8f9fa;
-        }
-        .stMetric {
-            background-color: #ffffff;
+        /* Glassmorphism containers for premium look and dark/light mode compatibility */
+        [data-testid="stMetric"] {
+            background-color: rgba(255, 255, 255, 0.05);
             padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .pipeline-card {
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.03);
             padding: 20px;
             border-radius: 12px;
             border-left: 5px solid #4CAF50;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            backdrop-filter: blur(5px);
         }
         .pipeline-step {
             font-weight: bold;
-            color: #2e7d32;
-            font-size: 1.1em;
+            color: #4CAF50;
+            font-size: 1.15em;
+            margin-bottom: 5px;
         }
         </style>
     """, unsafe_allow_html=True)
