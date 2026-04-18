@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import joblib
+import pandas as pd
 import streamlit as st
 
 from agent.farm_agent import run_farm_agent
@@ -72,7 +73,25 @@ def main() -> None:
 
         st.metric("Predicted Yield", f"{predicted_yield:.2f}")
         render_risk_badge(risk_level)
+
+        with st.expander("Yield Visualization", expanded=True):
+            chart_data = pd.DataFrame(
+                {
+                    "Category": ["Predicted Yield", "Typical Benchmark"],
+                    "Yield Value": [predicted_yield, 4.0],
+                }
+            )
+            st.bar_chart(chart_data, x="Category", y="Yield Value", color="#4CAF50")
+
         st.markdown(final_state["final_report"])
+
+        st.download_button(
+            label="Export Advisory Report",
+            data=final_state["final_report"],
+            file_name=f"farm_advisory_{item.lower()}.md",
+            mime="text/markdown",
+            use_container_width=True,
+        )
 
 
 if __name__ == "__main__":
