@@ -8,7 +8,7 @@ chromadb
 streamlit
 langchain-anthropic
 sentence-transformers
-scikit-learn
+scikit-learn==1.3.2
 joblib
 pandas
 python-dotenv

@@ -5,8 +5,13 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+import warnings
 import joblib
 import pandas as pd
+from sklearn.exceptions import InconsistentVersionWarning
+
+# Catch scikit-learn version warnings when loading the older model
+warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
 from config import LABEL_ENCODERS_PATH, RF_MODEL_PATH, SCALER_PATH
 
