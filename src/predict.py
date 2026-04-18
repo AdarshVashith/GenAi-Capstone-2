@@ -30,6 +30,12 @@ def load_prediction_artifacts() -> tuple[Any, Any, dict[str, Any]]:
             + ", ".join(missing)
         )
     model = joblib.load(RF_MODEL_PATH)
+    # Patch for scikit-learn >= 1.4 compatibility with older models
+    if hasattr(model, "estimators_"):
+        for estimator in model.estimators_:
+            if not hasattr(estimator, "monotonic_cst"):
+                estimator.monotonic_cst = None
+    
     scaler = joblib.load(SCALER_PATH)
     label_encoders = joblib.load(LABEL_ENCODERS_PATH)
     return model, scaler, label_encoders

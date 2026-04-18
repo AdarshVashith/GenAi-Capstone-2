@@ -22,6 +22,18 @@ Set your Anthropic API key before running the advisory app:
 export ANTHROPIC_API_KEY="your_api_key_here"
 ```
 
+You can also create a local `.env` file in the project root:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` and set:
+
+```bash
+ANTHROPIC_API_KEY=your_api_key_here
+```
+
 ## Build the Vectorstore
 
 ```bash
