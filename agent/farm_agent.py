@@ -127,6 +127,23 @@ def run_farm_agent(farm_data: dict[str, Any]) -> FarmAgentState:
     return agent.invoke(initial_state)
 
 
+def answer_follow_up(report_context: str, question: str) -> str:
+    """Answer a follow-up question based on the provided report context."""
+    if not os.getenv("GROQ_API_KEY"):
+        return "Cannot answer follow-up questions without a `GROQ_API_KEY`."
+
+    prompt = (
+        "You are an expert agronomy consultant. A user has received the following farm advisory "
+        "report and has a follow-up question. Use the report content to provide a helpful, "
+        "accurate, and professional answer.\n\n"
+        f"--- ADVISORY REPORT ---\n{report_context}\n\n"
+        f"--- USER QUESTION ---\n{question}\n\n"
+        "Expert Answer:"
+    )
+    llm = ChatGroq(model=LLM_MODEL_NAME, temperature=0.7)
+    return llm.invoke(prompt).content
+
+
 if __name__ == "__main__":
     try:
         example_state = run_farm_agent(

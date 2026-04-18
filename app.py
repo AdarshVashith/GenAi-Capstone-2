@@ -1,13 +1,12 @@
 """Streamlit UI for the Farm Advisory Assistant."""
 
 from __future__ import annotations
-
 import joblib
 import pandas as pd
 import streamlit as st
 from fpdf import FPDF
 
-from agent.farm_agent import run_farm_agent
+from agent.farm_agent import run_farm_agent, answer_follow_up
 from config import LABEL_ENCODERS_PATH
 
 
@@ -48,6 +47,12 @@ def main() -> None:
     st.title("Farm Advisory Assistant")
     st.write("Generate a crop-specific advisory using your prediction model and agronomy references.")
 
+    # Initialize session state for persistence
+    if "final_state" not in st.session_state:
+        st.session_state.final_state = None
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
     try:
         label_encoders = load_label_encoders()
     except FileNotFoundError:
@@ -79,11 +84,15 @@ def main() -> None:
         }
         try:
             with st.spinner("Generating advisory report..."):
-                final_state = run_farm_agent(farm_data)
+                st.session_state.final_state = run_farm_agent(farm_data)
+                st.session_state.chat_history = [] # Reset chat for new report
         except Exception as exc:
             st.error(f"Unable to generate advisory: {exc}")
             st.stop()
 
+    # Display results if they exist in state
+    if st.session_state.final_state:
+        final_state = st.session_state.final_state
         predicted_yield = final_state["yield_prediction"]["predicted_yield"]
         risk_level = final_state["yield_prediction"]["risk_level"]
 
@@ -122,6 +131,27 @@ def main() -> None:
                 )
             except Exception as e:
                 st.error(f"Could not generate PDF: {e}")
+
+        st.divider()
+        st.subheader("Follow-up Questions")
+        st.write("Ask the AI advisor more details about this report.")
+
+        # Display history
+        for message in st.session_state.chat_history:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+
+        # Chat input
+        if prompt := st.chat_input("Ask a question about your farm advisory..."):
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            st.session_state.chat_history.append({"role": "user", "content": prompt})
+
+            with st.chat_message("assistant"):
+                with st.spinner("Thinking..."):
+                    response = answer_follow_up(final_state["final_report"], prompt)
+                    st.markdown(response)
+            st.session_state.chat_history.append({"role": "assistant", "content": response})
 
 
 if __name__ == "__main__":
