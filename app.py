@@ -29,7 +29,7 @@ def create_pdf(text: str) -> bytes:
     clean_text = text.replace("’", "'").replace("–", "-")
     
     pdf.multi_cell(0, 10, clean_text)
-    return pdf.output(dest='S')
+    return bytes(pdf.output())
 
 
 def render_risk_badge(risk_level: str) -> None:
