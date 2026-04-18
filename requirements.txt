@@ -8,7 +8,7 @@ chromadb
 streamlit
 langchain-groq
 sentence-transformers
-scikit-learn==1.3.2
+scikit-learn
 joblib
 pandas
 python-dotenv
