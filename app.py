@@ -5,6 +5,7 @@ from __future__ import annotations
 import joblib
 import pandas as pd
 import streamlit as st
+from fpdf import FPDF
 
 from agent.farm_agent import run_farm_agent
 from config import LABEL_ENCODERS_PATH
@@ -14,6 +15,21 @@ from config import LABEL_ENCODERS_PATH
 def load_label_encoders():
     """Load label encoders for populating dropdown options."""
     return joblib.load(LABEL_ENCODERS_PATH)
+
+
+def create_pdf(text: str) -> bytes:
+    """Generate a simple PDF from the advisory text."""
+    pdf = FPDF()
+    pdf.add_page()
+    # Use a standard font. Note: fpdf doesn't support full markdown, 
+    # so we strip # and * for the PDF version to keep it clean.
+    pdf.set_font("Arial", size=12)
+    
+    # Handle utf-8 characters by replacing or ignoring common ones if needed
+    clean_text = text.replace("’", "'").replace("–", "-")
+    
+    pdf.multi_cell(0, 10, clean_text)
+    return pdf.output(dest='S')
 
 
 def render_risk_badge(risk_level: str) -> None:
@@ -85,13 +101,27 @@ def main() -> None:
 
         st.markdown(final_state["final_report"])
 
-        st.download_button(
-            label="Export Advisory Report",
-            data=final_state["final_report"],
-            file_name=f"farm_advisory_{item.lower()}.md",
-            mime="text/markdown",
-            use_container_width=True,
-        )
+        col1, col2 = st.columns(2)
+        with col1:
+            st.download_button(
+                label="Export as Markdown",
+                data=final_state["final_report"],
+                file_name=f"farm_advisory_{item.lower()}.md",
+                mime="text/markdown",
+                use_container_width=True,
+            )
+        with col2:
+            try:
+                pdf_bytes = create_pdf(final_state["final_report"])
+                st.download_button(
+                    label="Export as PDF",
+                    data=pdf_bytes,
+                    file_name=f"farm_advisory_{item.lower()}.pdf",
+                    mime="application/pdf",
+                    use_container_width=True,
+                )
+            except Exception as e:
+                st.error(f"Could not generate PDF: {e}")
 
 
 if __name__ == "__main__":
