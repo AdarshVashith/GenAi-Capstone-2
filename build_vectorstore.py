@@ -1,7 +1,6 @@
 """Build a persistent ChromaDB vectorstore from local agronomy text files."""
 
 import logging
-from pathlib import Path
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma

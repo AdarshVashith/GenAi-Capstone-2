@@ -1,10 +1,8 @@
 """Streamlit UI for the Farm Advisory Assistant."""
 
 from __future__ import annotations
-import joblib
 import pandas as pd
 import streamlit as st
-from fpdf import FPDF
 
 from agent.farm_agent import run_farm_agent, answer_follow_up
 from src.ui_utils import load_label_encoders, create_pdf, render_risk_badge
