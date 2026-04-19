@@ -5,16 +5,20 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+import logging
 import warnings
 import joblib
 import pandas as pd
 from sklearn.exceptions import InconsistentVersionWarning
+
+from src.preprocess import preprocess_input
 
 # Catch scikit-learn version warnings when loading the older model
 warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
 from config import LABEL_ENCODERS_PATH, RF_MODEL_PATH, SCALER_PATH
 
+logger = logging.getLogger(__name__)
 
 FEATURE_COLUMNS = [
     "Area",
@@ -60,8 +64,11 @@ def encode_features(farm_data: dict[str, Any], label_encoders: dict[str, Any]) -
 
 def predict_yield(farm_data: dict[str, Any]) -> dict[str, float]:
     """Predict crop yield using the persisted Random Forest model."""
+    cleaned_data = preprocess_input(farm_data)
     model, scaler, label_encoders = load_prediction_artifacts()
-    encoded = encode_features(farm_data, label_encoders)
+    encoded = encode_features(cleaned_data, label_encoders)
     scaled = scaler.transform(encoded)
     predicted_value = float(model.predict(scaled)[0])
+    logger.info("Predicted yield %.4f for crop=%s area=%s", predicted_value, farm_data.get("Item"), farm_data.get("Area"))
     return {"predicted_yield": predicted_value}
+
