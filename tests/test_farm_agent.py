@@ -10,7 +10,7 @@ def test_assess_risk_node_low_risk():
         "farm_data": {},
         "yield_prediction": {"predicted_yield": 4.5},
         "retrieved_docs": [],
-        "final_report": ""
+        "final_report": "",
     }
     result = assess_risk_node(state)
     assert result["yield_prediction"]["risk_level"] == "Low"
@@ -22,7 +22,7 @@ def test_assess_risk_node_medium_risk():
         "farm_data": {},
         "yield_prediction": {"predicted_yield": 3.0},
         "retrieved_docs": [],
-        "final_report": ""
+        "final_report": "",
     }
     result = assess_risk_node(state)
     assert result["yield_prediction"]["risk_level"] == "Medium"
@@ -34,7 +34,7 @@ def test_assess_risk_node_high_risk():
         "farm_data": {},
         "yield_prediction": {"predicted_yield": 2.0},
         "retrieved_docs": [],
-        "final_report": ""
+        "final_report": "",
     }
     result = assess_risk_node(state)
     assert result["yield_prediction"]["risk_level"] == "High"

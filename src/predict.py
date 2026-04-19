@@ -83,19 +83,27 @@ def load_prediction_artifacts() -> tuple[Any, Any, Any, dict[str, Any]]:
 def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     """Add interaction and domain-knowledge features (must match train.py)."""
     working = df.copy()
-    working["temp_rainfall"] = working["avg_temp"] * working["average_rain_fall_mm_per_year"]
+    working["temp_rainfall"] = (
+        working["avg_temp"] * working["average_rain_fall_mm_per_year"]
+    )
     working["temp_pesticides"] = working["avg_temp"] * working["pesticides_tonnes"]
-    working["rainfall_pesticides"] = working["average_rain_fall_mm_per_year"] * working["pesticides_tonnes"]
+    working["rainfall_pesticides"] = (
+        working["average_rain_fall_mm_per_year"] * working["pesticides_tonnes"]
+    )
     working["optimal_temp_dist"] = abs(working["avg_temp"] - 25)
     return working
 
 
-def encode_features(farm_data: dict[str, Any], label_encoders: dict[str, Any]) -> pd.DataFrame:
+def encode_features(
+    farm_data: dict[str, Any], label_encoders: dict[str, Any]
+) -> pd.DataFrame:
     """Encode categorical fields and add engineered features."""
     row = {
         "Area": label_encoders["Area"].transform([farm_data["Area"]])[0],
         "Item": label_encoders["Item"].transform([farm_data["Item"]])[0],
-        "average_rain_fall_mm_per_year": float(farm_data["average_rain_fall_mm_per_year"]),
+        "average_rain_fall_mm_per_year": float(
+            farm_data["average_rain_fall_mm_per_year"]
+        ),
         "avg_temp": float(farm_data["avg_temp"]),
         "pesticides_tonnes": float(farm_data["pesticides_tonnes"]),
     }

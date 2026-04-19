@@ -7,10 +7,17 @@ from langchain_chroma import Chroma
 from langchain_community.document_loaders import TextLoader
 from langchain_huggingface import HuggingFaceEmbeddings
 
-from config import EMBEDDING_MODEL_NAME, EMBEDDINGS_CACHE_DIR, RAG_DOCS_DIR, VECTORSTORE_DIR
+from config import (
+    EMBEDDING_MODEL_NAME,
+    EMBEDDINGS_CACHE_DIR,
+    RAG_DOCS_DIR,
+    VECTORSTORE_DIR,
+)
 
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 

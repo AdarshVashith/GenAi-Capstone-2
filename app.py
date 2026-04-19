@@ -12,7 +12,8 @@ from src.ui_utils import load_label_encoders, create_pdf, render_risk_badge
 
 def main() -> None:
     """Render the Farm Advisory Assistant UI."""
-    st.markdown("""
+    st.markdown(
+        """
         <style>
         /* Glassmorphism containers for premium look and dark/light mode compatibility */
         [data-testid="stMetric"] {
@@ -41,7 +42,9 @@ def main() -> None:
             margin-bottom: 5px;
         }
         </style>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
 
     st.title("🚜 Farm Advisory & Risk Dashboard")
     st.write("Professional grade risk analysis and agronomic advisory platform.")
@@ -70,7 +73,9 @@ def main() -> None:
         item = st.selectbox("Crop Type", crop_options)
         avg_temp = st.number_input("Avg Temperature (°C)", value=25.0)
         rainfall = st.number_input("Rainfall (mm/year)", min_value=0.0, value=800.0)
-        pesticide_usage = st.number_input("Pesticide Usage (tonnes)", min_value=0.0, value=50.0)
+        pesticide_usage = st.number_input(
+            "Pesticide Usage (tonnes)", min_value=0.0, value=50.0
+        )
         st.divider()
         submit = st.button("🚀 Execute Analysis Pipeline", use_container_width=True)
 
@@ -88,7 +93,7 @@ def main() -> None:
                     st.warning("Please configure the parameters first.")
                 else:
                     st.session_state.final_state = run_farm_agent(farm_data)
-                    st.session_state.chat_history = [] # Reset chat for new report
+                    st.session_state.chat_history = []  # Reset chat for new report
         except BaseException as exc:
             st.error("Pipeline Execution Failed.")
             with st.expander("Show Trace"):
@@ -96,11 +101,9 @@ def main() -> None:
             st.stop()
 
     # Create Tabs
-    tab_dashboard, tab_prediction, tab_agent = st.tabs([
-        "📊 Model Dashboard", 
-        "📈 Prediction Overview", 
-        "🤖 Agentic AI Strategy"
-    ])
+    tab_dashboard, tab_prediction, tab_agent = st.tabs(
+        ["📊 Model Dashboard", "📈 Prediction Overview", "🤖 Agentic AI Strategy"]
+    )
 
     with tab_dashboard:
         st.subheader("Model Performance Technicals")
@@ -119,11 +122,12 @@ def main() -> None:
         m1.metric("Ensemble R² Score", f"{ens_r2:.2%}")
         m2.metric("Ensemble MAE", f"{ens_mae:.4f}")
         m3.metric("GB Cross-Val R² (5-fold)", f"{cv_r2:.2%}")
-        
+
         st.divider()
         st.subheader("🛠️ Pipeline Architecture")
-        
-        st.markdown("""
+
+        st.markdown(
+            """
         <div class="pipeline-card">
             <div class="pipeline-step">1. Input Integration</div>
             <p>Configure borrower metrics via sidebar or manual entry. Real-time data validation and normalization.</p>
@@ -140,7 +144,9 @@ def main() -> None:
             <div class="pipeline-step">4. AI Agent (Engine)</div>
             <p>LangGraph + RAG (Vector Search) generates tailored lending and agronomic strategies from verified policy documents.</p>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
     with tab_prediction:
         if st.session_state.final_state:
@@ -150,7 +156,7 @@ def main() -> None:
 
             st.subheader("Live Prediction Results")
             st.write("Inference results generated using Logistic Regression Kernel.")
-            
+
             p_col1, p_col2 = st.columns(2)
             with p_col1:
                 st.metric("Predicted Annual Yield", f"{predicted_yield:.2f} tonnes/ha")
@@ -167,18 +173,22 @@ def main() -> None:
                 )
                 st.bar_chart(chart_data, x="Category", y="Value", color="#4CAF50")
         else:
-            st.info("Please execute the analysis pipeline from the sidebar to view live predictions.")
+            st.info(
+                "Please execute the analysis pipeline from the sidebar to view live predictions."
+            )
 
     with tab_agent:
         if st.session_state.final_state:
             final_state = st.session_state.final_state
-            
+
             st.subheader("LangGraph Workflow Pipeline")
-            st.markdown("""
+            st.markdown(
+                """
             **① Analyze Risk** ➔ **② RAG Retrieve (FAISS)** ➔ **③ Generate Report** ➔ **📄 Structured Output**
-            """)
+            """
+            )
             st.divider()
-            
+
             st.markdown(final_state["final_report"])
 
             col1, col2 = st.columns(2)
@@ -205,7 +215,9 @@ def main() -> None:
 
             st.divider()
             st.subheader("💬 AI Resident Advisor: Q&A")
-            st.write("Interrogate the report and get deeper insights into your farm's risk profile.")
+            st.write(
+                "Interrogate the report and get deeper insights into your farm's risk profile."
+            )
 
             # Display history
             for message in st.session_state.chat_history:
@@ -216,15 +228,21 @@ def main() -> None:
             if prompt := st.chat_input("Ask a question about your farm advisory..."):
                 with st.chat_message("user"):
                     st.markdown(prompt)
-                st.session_state.chat_history.append({"role": "user", "content": prompt})
+                st.session_state.chat_history.append(
+                    {"role": "user", "content": prompt}
+                )
 
                 with st.chat_message("assistant"):
                     with st.spinner("Consulting knowledge base..."):
                         response = answer_follow_up(final_state["final_report"], prompt)
                         st.markdown(response)
-                st.session_state.chat_history.append({"role": "assistant", "content": response})
+                st.session_state.chat_history.append(
+                    {"role": "assistant", "content": response}
+                )
         else:
-            st.info("Please execute the analysis pipeline from the sidebar to generate agentic insights.")
+            st.info(
+                "Please execute the analysis pipeline from the sidebar to generate agentic insights."
+            )
 
 
 if __name__ == "__main__":

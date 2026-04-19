@@ -9,15 +9,30 @@ logger = logging.getLogger(__name__)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run a quick farm advisory prediction.")
-    parser.add_argument("--area", default="India", help="Geographic area (default: India)")
+    parser = argparse.ArgumentParser(
+        description="Run a quick farm advisory prediction."
+    )
+    parser.add_argument(
+        "--area", default="India", help="Geographic area (default: India)"
+    )
     parser.add_argument("--crop", default="Wheat", help="Crop type (default: Wheat)")
-    parser.add_argument("--temp", type=float, default=25.0, help="Avg temperature (default: 25.0)")
-    parser.add_argument("--rainfall", type=float, default=800.0, help="Rainfall mm/year (default: 800)")
-    parser.add_argument("--pesticides", type=float, default=50.0, help="Pesticide usage in tonnes (default: 50)")
+    parser.add_argument(
+        "--temp", type=float, default=25.0, help="Avg temperature (default: 25.0)"
+    )
+    parser.add_argument(
+        "--rainfall", type=float, default=800.0, help="Rainfall mm/year (default: 800)"
+    )
+    parser.add_argument(
+        "--pesticides",
+        type=float,
+        default=50.0,
+        help="Pesticide usage in tonnes (default: 50)",
+    )
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+    )
 
     farm_data = {
         "Area": args.area,

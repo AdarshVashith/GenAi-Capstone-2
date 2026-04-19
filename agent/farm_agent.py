@@ -75,13 +75,17 @@ def generate_report_node(state: FarmAgentState) -> FarmAgentState:
         llm = ChatGroq(model=LLM_MODEL_NAME, temperature=0)
         report = llm.invoke(prompt).content
     else:
-        references = "\n".join(
-            f"- {doc['source']}" for doc in state["retrieved_docs"]
-        ) or "- No references retrieved."
-        actions = "\n".join(
-            f"- {doc['content'].splitlines()[1] if len(doc['content'].splitlines()) > 1 else doc['content'][:120]}"
-            for doc in state["retrieved_docs"][:3]
-        ) or "- Review irrigation, nutrient, and pest management guidance."
+        references = (
+            "\n".join(f"- {doc['source']}" for doc in state["retrieved_docs"])
+            or "- No references retrieved."
+        )
+        actions = (
+            "\n".join(
+                f"- {doc['content'].splitlines()[1] if len(doc['content'].splitlines()) > 1 else doc['content'][:120]}"
+                for doc in state["retrieved_docs"][:3]
+            )
+            or "- Review irrigation, nutrient, and pest management guidance."
+        )
         report = (
             "## Crop & Field Summary\n"
             f"- Area: {state['farm_data']['Area']}\n"
@@ -162,6 +166,8 @@ if __name__ == "__main__":
             }
         )
         logger.info("Generated Prediction: %s", example_state["yield_prediction"])
-        logger.info("Generated Report Snippet: %s...", example_state["final_report"][:200])
+        logger.info(
+            "Generated Report Snippet: %s...", example_state["final_report"][:200]
+        )
     except BaseException as exc:
         logger.exception("Unable to run farm agent: %s", exc)

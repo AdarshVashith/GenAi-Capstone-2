@@ -20,7 +20,14 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from config import DATA_DIR, LABEL_ENCODERS_PATH, MODEL_DIR, RF_MODEL_PATH, SCALER_PATH, TRAINING_DATA_PATH
+from config import (
+    DATA_DIR,
+    LABEL_ENCODERS_PATH,
+    MODEL_DIR,
+    RF_MODEL_PATH,
+    SCALER_PATH,
+    TRAINING_DATA_PATH,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -89,9 +96,13 @@ def generate_demo_dataset() -> pd.DataFrame:
 def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     """Add interaction and domain-knowledge features to improve generalization."""
     working = df.copy()
-    working["temp_rainfall"] = working["avg_temp"] * working["average_rain_fall_mm_per_year"]
+    working["temp_rainfall"] = (
+        working["avg_temp"] * working["average_rain_fall_mm_per_year"]
+    )
     working["temp_pesticides"] = working["avg_temp"] * working["pesticides_tonnes"]
-    working["rainfall_pesticides"] = working["average_rain_fall_mm_per_year"] * working["pesticides_tonnes"]
+    working["rainfall_pesticides"] = (
+        working["average_rain_fall_mm_per_year"] * working["pesticides_tonnes"]
+    )
     working["optimal_temp_dist"] = abs(working["avg_temp"] - 25)
     return working
 
@@ -106,7 +117,9 @@ def load_training_data(csv_path: Path = TRAINING_DATA_PATH) -> pd.DataFrame:
     return demo_df
 
 
-def prepare_features(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, dict[str, LabelEncoder]]:
+def prepare_features(
+    df: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.Series, dict[str, LabelEncoder]]:
     """Encode categorical features, add engineered features, and return model-ready data."""
     working = df.copy()
     label_encoders: dict[str, LabelEncoder] = {}
@@ -128,7 +141,9 @@ def train_and_save_artifacts(csv_path: Path = TRAINING_DATA_PATH) -> dict[str, f
     df = load_training_data(csv_path)
     X, y, label_encoders = prepare_features(df)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
@@ -195,7 +210,9 @@ def train_and_save_artifacts(csv_path: Path = TRAINING_DATA_PATH) -> dict[str, f
 
 def main() -> None:
     """Train and export the artifact files needed by the advisory app."""
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+    )
     metrics = train_and_save_artifacts()
     logger.info("Saved RF model to %s", RF_MODEL_PATH)
     logger.info("Saved GB model to %s", GB_MODEL_PATH)
@@ -207,7 +224,9 @@ def main() -> None:
     logger.info("  RMSE: %.6f", metrics["ensemble_rmse"])
     logger.info("  R²:   %.6f", metrics["ensemble_r2"])
     logger.info("─── Cross-Validation (GB, 5-fold) ───")
-    logger.info("  R²:   %.6f ± %.6f", metrics["gb_cv_r2_mean"], metrics["gb_cv_r2_std"])
+    logger.info(
+        "  R²:   %.6f ± %.6f", metrics["gb_cv_r2_mean"], metrics["gb_cv_r2_std"]
+    )
 
 
 if __name__ == "__main__":

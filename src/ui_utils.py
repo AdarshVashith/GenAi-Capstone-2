@@ -16,13 +16,13 @@ def create_pdf(text: str) -> bytes:
     """Generate a simple PDF from the advisory text."""
     pdf = FPDF()
     pdf.add_page()
-    # Use a standard font. Note: fpdf doesn't support full markdown, 
+    # Use a standard font. Note: fpdf doesn't support full markdown,
     # so we strip # and * for the PDF version to keep it clean.
     pdf.set_font("Arial", size=12)
-    
+
     # Handle utf-8 characters by replacing or ignoring common ones if needed
     clean_text = text.replace("’", "'").replace("–", "-")
-    
+
     pdf.multi_cell(0, 10, clean_text)
     return bytes(pdf.output())
 

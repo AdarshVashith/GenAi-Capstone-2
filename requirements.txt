@@ -15,3 +15,5 @@ python-dotenv
 fpdf2
 pytest
 pytest-mock
+black
+flake8

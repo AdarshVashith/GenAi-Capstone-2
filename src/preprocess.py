@@ -9,7 +9,11 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 REQUIRED_FIELDS = [
-    "Area", "Item", "average_rain_fall_mm_per_year", "avg_temp", "pesticides_tonnes"
+    "Area",
+    "Item",
+    "average_rain_fall_mm_per_year",
+    "avg_temp",
+    "pesticides_tonnes",
 ]
 
 
@@ -31,9 +35,14 @@ def preprocess_input(payload: dict[str, Any]) -> dict[str, Any]:
     normalized = dict(payload)
     normalized["Area"] = str(normalized["Area"]).strip()
     normalized["Item"] = str(normalized["Item"]).strip()
-    normalized["average_rain_fall_mm_per_year"] = float(normalized["average_rain_fall_mm_per_year"])
+    normalized["average_rain_fall_mm_per_year"] = float(
+        normalized["average_rain_fall_mm_per_year"]
+    )
     normalized["avg_temp"] = float(normalized["avg_temp"])
     normalized["pesticides_tonnes"] = float(normalized["pesticides_tonnes"])
-    logger.debug("Preprocessed input for Area=%s, Item=%s", normalized["Area"], normalized["Item"])
+    logger.debug(
+        "Preprocessed input for Area=%s, Item=%s",
+        normalized["Area"],
+        normalized["Item"],
+    )
     return normalized
-
