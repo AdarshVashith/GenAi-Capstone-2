@@ -257,12 +257,3 @@ It provides:
 👉 This project is a step toward **smart farming and precision agriculture** using modern AI technologies.
 
 ---
-
-## 📬 Contact
-
-For queries or collaboration:
-
-* Email: [your.email@gmail.com](mailto:your.email@gmail.com)
-* LinkedIn: your-linkedin-profile
-
----
