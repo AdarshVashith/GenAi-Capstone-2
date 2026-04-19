@@ -8,10 +8,14 @@ from typing import Any, TypedDict
 from langchain_groq import ChatGroq
 from langgraph.graph import END, START, StateGraph
 
+import logging
+
 from agent.prompts import REPORT_PROMPT_TEMPLATE
 from agent.retriever import get_vectorstore
 from config import LLM_MODEL_NAME
 from src.predict import predict_yield
+
+logger = logging.getLogger(__name__)
 
 
 class FarmAgentState(TypedDict):
@@ -112,6 +116,7 @@ def build_farm_agent():
     graph.add_edge("assess_risk", "retrieve")
     graph.add_edge("retrieve", "generate_report")
     graph.add_edge("generate_report", END)
+    logger.info("LangGraph workflow compiled successfully.")
     return graph.compile()
 
 
@@ -124,6 +129,7 @@ def run_farm_agent(farm_data: dict[str, Any]) -> FarmAgentState:
         "retrieved_docs": [],
         "final_report": "",
     }
+    logger.info("Invoking farm agent workflow...")
     return agent.invoke(initial_state)
 
 
@@ -155,7 +161,7 @@ if __name__ == "__main__":
                 "pesticides_tonnes": 50.0,
             }
         )
-        print(example_state["yield_prediction"])
-        print(example_state["final_report"])
-    except Exception as exc:
-        print(f"Unable to run farm agent: {exc}")
+        logger.info("Generated Prediction: %s", example_state["yield_prediction"])
+        logger.info("Generated Report Snippet: %s...", example_state["final_report"][:200])
+    except BaseException as exc:
+        logger.exception("Unable to run farm agent: %s", exc)
