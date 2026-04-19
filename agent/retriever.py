@@ -1,9 +1,13 @@
 """Chroma retriever setup."""
 
+import logging
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 
 from config import EMBEDDING_MODEL_NAME, EMBEDDINGS_CACHE_DIR, VECTORSTORE_DIR
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_embeddings() -> HuggingFaceEmbeddings:
@@ -18,7 +22,11 @@ def get_embeddings() -> HuggingFaceEmbeddings:
 
 def get_vectorstore() -> Chroma:
     """Return the persistent Chroma vector store."""
+    if not VECTORSTORE_DIR.exists():
+        logger.warning("VECTORSTORE_DIR %s does not exist. Please build the vector database first.", VECTORSTORE_DIR)
+        
     return Chroma(
         persist_directory=str(VECTORSTORE_DIR),
         embedding_function=get_embeddings(),
     )
+

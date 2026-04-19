@@ -84,10 +84,15 @@ def main() -> None:
         }
         try:
             with st.spinner("Executing ML and Agentic Pipeline..."):
-                st.session_state.final_state = run_farm_agent(farm_data)
-                st.session_state.chat_history = [] # Reset chat for new report
-        except Exception as exc:
-            st.error(f"Pipeline Execution Failed: {exc}")
+                if not area or not item:
+                    st.warning("Please configure the parameters first.")
+                else:
+                    st.session_state.final_state = run_farm_agent(farm_data)
+                    st.session_state.chat_history = [] # Reset chat for new report
+        except BaseException as exc:
+            st.error("Pipeline Execution Failed.")
+            with st.expander("Show Trace"):
+                st.write(str(exc))
             st.stop()
 
     # Create Tabs
