@@ -258,11 +258,3 @@ It provides:
 
 ---
 
-## 📬 Contact
-
-For queries or collaboration:
-
-* Email: [your.email@gmail.com](mailto:your.email@gmail.com)
-* LinkedIn: your-linkedin-profile
-
----
