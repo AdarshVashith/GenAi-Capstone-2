@@ -230,7 +230,7 @@ The LangGraph-based agent can:
 | ------------ | ----------------------------------------------------------------- |
 | Adarsh | Model Development, RAG Integration, Streamlit UI |
 | Satyam | Model Developement, Testing, Documentation |
-|Himank | Senior Model Developement , Documentation |
+|Himank | Model Developement , Documentation |
 |Daksh | Report , Documentation , Agent Testing |
 ---
 
