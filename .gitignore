@@ -2,3 +2,23 @@
 __pycache__/
 *.pyc
 .env
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing & IDEs
+.pytest_cache/
+.vscode/
+
+# Local database/cache
+vectorstore/
+*.db
+*.sqlite3
+
+# Generated reports
+*.pdf
