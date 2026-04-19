@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 import sys
 from typing import Any
@@ -18,6 +19,8 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 from config import DATA_DIR, LABEL_ENCODERS_PATH, MODEL_DIR, RF_MODEL_PATH, SCALER_PATH, TRAINING_DATA_PATH
+
+logger = logging.getLogger(__name__)
 
 
 TARGET_COLUMN = "hg/ha_yield"
@@ -124,12 +127,13 @@ def train_and_save_artifacts(csv_path: Path = TRAINING_DATA_PATH) -> dict[str, f
 
 def main() -> None:
     """Train and export the artifact files needed by the advisory app."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
     metrics = train_and_save_artifacts()
-    print(f"Saved model to {RF_MODEL_PATH}")
-    print(f"Saved scaler to {SCALER_PATH}")
-    print(f"Saved label encoders to {LABEL_ENCODERS_PATH}")
-    print(f"Validation MAE: {metrics['mae']:.4f}")
-    print(f"Validation R2: {metrics['r2']:.4f}")
+    logger.info("Saved model to %s", RF_MODEL_PATH)
+    logger.info("Saved scaler to %s", SCALER_PATH)
+    logger.info("Saved label encoders to %s", LABEL_ENCODERS_PATH)
+    logger.info("Validation MAE: %.4f", metrics["mae"])
+    logger.info("Validation R2:  %.4f", metrics["r2"])
 
 
 if __name__ == "__main__":
