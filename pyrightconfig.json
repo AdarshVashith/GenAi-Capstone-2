@@ -3,8 +3,7 @@
     "venv": ".venv",
     "executionEnvironments": [
         {
-            "root": ".",
-            "extraPaths": ["."]
+            "root": "."
         }
     ]
 }
