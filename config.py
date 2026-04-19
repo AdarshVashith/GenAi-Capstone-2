@@ -16,8 +16,10 @@ MODEL_DIR = PROJECT_ROOT / "models"
 DATA_DIR = PROJECT_ROOT / "data"
 
 RF_MODEL_PATH = MODEL_DIR / "rf_model.pkl"
+GB_MODEL_PATH = MODEL_DIR / "gb_model.pkl"
 SCALER_PATH = MODEL_DIR / "scaler.pkl"
 LABEL_ENCODERS_PATH = MODEL_DIR / "label_encoders.pkl"
+TRAINING_METRICS_PATH = MODEL_DIR / "training_metrics.json"
 TRAINING_DATA_PATH = DATA_DIR / "crop_yield.csv"
 
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
