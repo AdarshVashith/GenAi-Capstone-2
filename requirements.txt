@@ -13,3 +13,5 @@ joblib
 pandas
 python-dotenv
 fpdf2
+pytest
+pytest-mock
