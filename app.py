@@ -1,10 +1,12 @@
 """Streamlit UI for the Farm Advisory Assistant."""
 
 from __future__ import annotations
+import json
 import pandas as pd
 import streamlit as st
 
 from agent.farm_agent import run_farm_agent, answer_follow_up
+from config import TRAINING_METRICS_PATH
 from src.ui_utils import load_label_encoders, create_pdf, render_risk_badge
 
 
@@ -102,10 +104,21 @@ def main() -> None:
 
     with tab_dashboard:
         st.subheader("Model Performance Technicals")
+
+        # Load real training metrics when available
+        if TRAINING_METRICS_PATH.exists():
+            with open(TRAINING_METRICS_PATH) as f:
+                t_metrics = json.load(f)
+            ens_r2 = t_metrics.get("ensemble_r2", 0)
+            ens_mae = t_metrics.get("ensemble_mae", 0)
+            cv_r2 = t_metrics.get("gb_cv_r2_mean", 0)
+        else:
+            ens_r2, ens_mae, cv_r2 = 0.0, 0.0, 0.0
+
         m1, m2, m3 = st.columns(3)
-        m1.metric("Model Accuracy", "88.4%", "1.2%")
-        m2.metric("Precision Score", "85.1%", "0.5%")
-        m3.metric("Recall Score", "82.7%", "-0.3%")
+        m1.metric("Ensemble R² Score", f"{ens_r2:.2%}")
+        m2.metric("Ensemble MAE", f"{ens_mae:.4f}")
+        m3.metric("GB Cross-Val R² (5-fold)", f"{cv_r2:.2%}")
         
         st.divider()
         st.subheader("🛠️ Pipeline Architecture")
