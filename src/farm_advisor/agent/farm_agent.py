@@ -10,10 +10,10 @@ from langgraph.graph import END, START, StateGraph
 
 import logging
 
-from agent.prompts import REPORT_PROMPT_TEMPLATE
-from agent.retriever import get_vectorstore
-from config import LLM_MODEL_NAME
-from src.predict import predict_yield
+from farm_advisor.agent.prompts import REPORT_PROMPT_TEMPLATE
+from farm_advisor.agent.retriever import get_vectorstore
+from farm_advisor.config import LLM_MODEL_NAME
+from farm_advisor.core.predict import predict_yield
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +73,7 @@ def generate_report_node(state: FarmAgentState) -> FarmAgentState:
     )
     if os.getenv("GROQ_API_KEY"):
         llm = ChatGroq(model=LLM_MODEL_NAME, temperature=0)
-        report = llm.invoke(prompt).content
+        report = str(llm.invoke(prompt).content)
     else:
         references = (
             "\n".join(f"- {doc['source']}" for doc in state["retrieved_docs"])
@@ -126,6 +126,7 @@ def build_farm_agent():
 
 def run_farm_agent(farm_data: dict[str, Any]) -> FarmAgentState:
     """Run the farm advisory workflow and return the final state."""
+    from typing import cast
     agent = build_farm_agent()
     initial_state: FarmAgentState = {
         "farm_data": farm_data,
@@ -134,7 +135,7 @@ def run_farm_agent(farm_data: dict[str, Any]) -> FarmAgentState:
         "final_report": "",
     }
     logger.info("Invoking farm agent workflow...")
-    return agent.invoke(initial_state)
+    return cast(FarmAgentState, agent.invoke(initial_state))
 
 
 def answer_follow_up(report_context: str, question: str) -> str:
@@ -151,7 +152,7 @@ def answer_follow_up(report_context: str, question: str) -> str:
         "Expert Answer:"
     )
     llm = ChatGroq(model=LLM_MODEL_NAME, temperature=0.7)
-    return llm.invoke(prompt).content
+    return str(llm.invoke(prompt).content)
 
 
 if __name__ == "__main__":

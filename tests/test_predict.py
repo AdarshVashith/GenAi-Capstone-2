@@ -1,7 +1,7 @@
 """Unit tests for prediction module."""
 
 import pytest
-from src.predict import predict_yield, BASE_FEATURE_COLUMNS
+from farm_advisor.core.predict import predict_yield, BASE_FEATURE_COLUMNS
 
 
 def test_predict_yield_mocked(mocker):
@@ -26,7 +26,7 @@ def test_predict_yield_mocked(mocker):
     mock_encoders = {"Area": mock_label_encoder_area, "Item": mock_label_encoder_item}
 
     mocker.patch(
-        "src.predict.load_prediction_artifacts",
+        "farm_advisor.core.predict.load_prediction_artifacts",
         return_value=(mock_rf_model, mock_gb_model, mock_scaler, mock_encoders),
     )
 
@@ -68,7 +68,7 @@ def test_predict_yield_rf_only_fallback(mocker):
 
     # gb_model is None (not found)
     mocker.patch(
-        "src.predict.load_prediction_artifacts",
+        "farm_advisor.core.predict.load_prediction_artifacts",
         return_value=(mock_rf_model, None, mock_scaler, mock_encoders),
     )
 

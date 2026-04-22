@@ -22,3 +22,5 @@ vectorstore/
 
 # Generated reports
 *.pdf
+egg-info/
+*.egg-info/

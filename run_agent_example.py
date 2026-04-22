@@ -3,7 +3,7 @@
 import argparse
 import logging
 
-from agent.farm_agent import run_farm_agent
+from farm_advisor.agent.farm_agent import run_farm_agent
 
 logger = logging.getLogger(__name__)
 

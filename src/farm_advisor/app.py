@@ -5,9 +5,9 @@ import json
 import pandas as pd
 import streamlit as st
 
-from agent.farm_agent import run_farm_agent, answer_follow_up
-from config import TRAINING_METRICS_PATH
-from src.ui_utils import load_label_encoders, create_pdf, render_risk_badge
+from farm_advisor.agent.farm_agent import run_farm_agent, answer_follow_up
+from farm_advisor.config import TRAINING_METRICS_PATH
+from farm_advisor.core.ui_utils import load_label_encoders, create_pdf, render_risk_badge
 
 
 def main() -> None:
@@ -63,6 +63,7 @@ def main() -> None:
             "and `models/scaler.pkl` before running the advisory UI."
         )
         st.stop()
+        return
 
     area_options = sorted(label_encoders["Area"].classes_.tolist())
     crop_options = sorted(label_encoders["Item"].classes_.tolist())
@@ -196,7 +197,7 @@ def main() -> None:
                 st.download_button(
                     label="📥 Export Report (MD)",
                     data=final_state["final_report"],
-                    file_name=f"farm_advisory_{item.lower()}.md",
+                    file_name=f"farm_advisory_{str(item).lower()}.md",
                     mime="text/markdown",
                     use_container_width=True,
                 )
@@ -206,7 +207,7 @@ def main() -> None:
                     st.download_button(
                         label="📥 Export Report (PDF)",
                         data=pdf_bytes,
-                        file_name=f"farm_advisory_{item.lower()}.pdf",
+                        file_name=f"farm_advisory_{str(item).lower()}.pdf",
                         mime="application/pdf",
                         use_container_width=True,
                     )
@@ -246,4 +247,11 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    from streamlit.runtime import exists
+    if exists():
+        main()
+    else:
+        import sys
+        from streamlit.web import cli as stcli
+        sys.argv = ["streamlit", "run", __file__]
+        sys.exit(stcli.main())

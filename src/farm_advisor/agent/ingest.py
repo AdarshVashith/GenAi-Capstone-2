@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from config import RAG_DOCS_DIR
+from farm_advisor.config import RAG_DOCS_DIR
 
 
 def load_document_paths() -> list[Path]:

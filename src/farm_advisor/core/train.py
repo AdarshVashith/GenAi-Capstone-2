@@ -20,7 +20,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from config import (
+from farm_advisor.config import (
     DATA_DIR,
     LABEL_ENCODERS_PATH,
     MODEL_DIR,
@@ -133,7 +133,7 @@ def prepare_features(
 
     X = working[ALL_FEATURE_COLUMNS]
     y = working[TARGET_COLUMN]
-    return X, y, label_encoders
+    return X, y, label_encoders  # type: ignore[return-value]
 
 
 def train_and_save_artifacts(csv_path: Path = TRAINING_DATA_PATH) -> dict[str, float]:

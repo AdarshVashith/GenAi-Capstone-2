@@ -1,7 +1,7 @@
 """Unit tests for the preprocessing and validation module."""
 
 import pytest
-from src.preprocess import preprocess_input, validate_input
+from farm_advisor.core.preprocess import preprocess_input, validate_input
 
 
 def test_preprocess_strips_whitespace():

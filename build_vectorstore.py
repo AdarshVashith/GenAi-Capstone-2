@@ -7,7 +7,7 @@ from langchain_chroma import Chroma
 from langchain_community.document_loaders import TextLoader
 from langchain_huggingface import HuggingFaceEmbeddings
 
-from config import (
+from farm_advisor.config import (
     EMBEDDING_MODEL_NAME,
     EMBEDDINGS_CACHE_DIR,
     RAG_DOCS_DIR,

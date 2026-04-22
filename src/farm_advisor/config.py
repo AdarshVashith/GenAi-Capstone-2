@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 RAG_DOCS_DIR = PROJECT_ROOT / "rag_docs"
 VECTORSTORE_DIR = PROJECT_ROOT / "vectorstore"
 EMBEDDINGS_CACHE_DIR = VECTORSTORE_DIR / "embeddings_cache"

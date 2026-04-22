@@ -11,12 +11,12 @@ import joblib
 import pandas as pd
 from sklearn.exceptions import InconsistentVersionWarning
 
-from src.preprocess import preprocess_input
+from farm_advisor.core.preprocess import preprocess_input
 
 # Catch scikit-learn version warnings when loading the older model
 warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
-from config import LABEL_ENCODERS_PATH, RF_MODEL_PATH, SCALER_PATH
+from farm_advisor.config import LABEL_ENCODERS_PATH, RF_MODEL_PATH, SCALER_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -108,7 +108,7 @@ def encode_features(
         "pesticides_tonnes": float(farm_data["pesticides_tonnes"]),
     }
     base_df = pd.DataFrame([row], columns=BASE_FEATURE_COLUMNS)
-    return engineer_features(base_df)[ALL_FEATURE_COLUMNS]
+    return engineer_features(base_df)[ALL_FEATURE_COLUMNS]  # type: ignore
 
 
 def predict_yield(farm_data: dict[str, Any]) -> dict[str, float]:

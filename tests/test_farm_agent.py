@@ -1,7 +1,8 @@
 """Unit tests for farm agent logic."""
 
 import pytest
-from agent.farm_agent import assess_risk_node
+from typing import cast
+from farm_advisor.agent.farm_agent import assess_risk_node, FarmAgentState
 
 
 def test_assess_risk_node_low_risk():
@@ -12,7 +13,7 @@ def test_assess_risk_node_low_risk():
         "retrieved_docs": [],
         "final_report": "",
     }
-    result = assess_risk_node(state)
+    result = assess_risk_node(cast(FarmAgentState, state))
     assert result["yield_prediction"]["risk_level"] == "Low"
 
 
@@ -24,7 +25,7 @@ def test_assess_risk_node_medium_risk():
         "retrieved_docs": [],
         "final_report": "",
     }
-    result = assess_risk_node(state)
+    result = assess_risk_node(cast(FarmAgentState, state))
     assert result["yield_prediction"]["risk_level"] == "Medium"
 
 
@@ -36,5 +37,5 @@ def test_assess_risk_node_high_risk():
         "retrieved_docs": [],
         "final_report": "",
     }
-    result = assess_risk_node(state)
+    result = assess_risk_node(cast(FarmAgentState, state))
     assert result["yield_prediction"]["risk_level"] == "High"

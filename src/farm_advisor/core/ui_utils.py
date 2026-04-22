@@ -3,7 +3,7 @@
 import joblib
 import streamlit as st
 from fpdf import FPDF
-from config import LABEL_ENCODERS_PATH
+from farm_advisor.config import LABEL_ENCODERS_PATH
 
 
 @st.cache_resource
