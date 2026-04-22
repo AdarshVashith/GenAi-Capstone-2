@@ -16,7 +16,11 @@ from farm_advisor.core.preprocess import preprocess_input
 # Catch scikit-learn version warnings when loading the older model
 warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
-from farm_advisor.config import LABEL_ENCODERS_PATH, RF_MODEL_PATH, SCALER_PATH  # noqa: E402
+from farm_advisor.config import (
+    LABEL_ENCODERS_PATH,
+    RF_MODEL_PATH,
+    SCALER_PATH,
+)  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
