@@ -20,7 +20,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from farm_advisor.config import (
+from farm_advisor.config import (  # noqa: E402
     DATA_DIR,
     LABEL_ENCODERS_PATH,
     MODEL_DIR,

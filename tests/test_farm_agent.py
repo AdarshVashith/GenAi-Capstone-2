@@ -1,6 +1,5 @@
 """Unit tests for farm agent logic."""
 
-import pytest
 from typing import cast
 from farm_advisor.agent.farm_agent import assess_risk_node, FarmAgentState
 

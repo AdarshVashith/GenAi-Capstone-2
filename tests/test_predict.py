@@ -1,7 +1,6 @@
 """Unit tests for prediction module."""
 
-import pytest
-from farm_advisor.core.predict import predict_yield, BASE_FEATURE_COLUMNS
+from farm_advisor.core.predict import predict_yield
 
 
 def test_predict_yield_mocked(mocker):
