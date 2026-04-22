@@ -127,6 +127,7 @@ def build_farm_agent():
 def run_farm_agent(farm_data: dict[str, Any]) -> FarmAgentState:
     """Run the farm advisory workflow and return the final state."""
     from typing import cast
+
     agent = build_farm_agent()
     initial_state: FarmAgentState = {
         "farm_data": farm_data,

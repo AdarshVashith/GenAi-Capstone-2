@@ -7,7 +7,11 @@ import streamlit as st
 
 from farm_advisor.agent.farm_agent import run_farm_agent, answer_follow_up
 from farm_advisor.config import TRAINING_METRICS_PATH
-from farm_advisor.core.ui_utils import load_label_encoders, create_pdf, render_risk_badge
+from farm_advisor.core.ui_utils import (
+    load_label_encoders,
+    create_pdf,
+    render_risk_badge,
+)
 
 
 def main() -> None:
@@ -248,10 +252,12 @@ def main() -> None:
 
 if __name__ == "__main__":
     from streamlit.runtime import exists
+
     if exists():
         main()
     else:
         import sys
         from streamlit.web import cli as stcli
+
         sys.argv = ["streamlit", "run", __file__]
         sys.exit(stcli.main())

@@ -4,7 +4,11 @@ import logging
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 
-from farm_advisor.config import EMBEDDING_MODEL_NAME, EMBEDDINGS_CACHE_DIR, VECTORSTORE_DIR
+from farm_advisor.config import (
+    EMBEDDING_MODEL_NAME,
+    EMBEDDINGS_CACHE_DIR,
+    VECTORSTORE_DIR,
+)
 
 
 logger = logging.getLogger(__name__)
